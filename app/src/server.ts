@@ -89,7 +89,7 @@ async function translateContent(
     async (resolve, reject) => {
       try {
         const browser = await puppeteer.launch({
-          // executablePath: process.env.CHROME_BIN,
+          executablePath: process.env.CHROME_BIN,
           headless: false,
           args: ["--no-sandbox", "--disable-setuid-sandbox"],
         })
