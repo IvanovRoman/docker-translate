@@ -1,32 +1,15 @@
-FROM node:11-alpine
+FROM node:12
 
-ENV CHROME_BIN="/usr/bin/chromium-browser" \
-  NODE_ENV="production"
-RUN set -x \
-  && apk update \
-  && apk upgrade \
-  && apk add --no-cache \
-  dumb-init \
-  chromium \
-  nss \
-  freetype \
-  freetype-dev \
-  harfbuzz \
-  ca-certificates \
-  ttf-freefont \
-  nodejs \
-  yarn \
-  && yarn add puppeteer@1.19.0 \
-  \
-  # Cleanup
-  && apk del --no-cache make gcc g++ python binutils-gold gnupg libstdc++ \
-  && rm -rf /usr/include \
-  && rm -rf /var/cache/apk/* /root/.node-gyp /usr/share/man /tmp/* \
-  && echo
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+RUN apt-get update && \
+  apt-get -y install xvfb gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 \
+  libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 \
+  libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 \
+  libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 \
+  libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget && \
+  rm -rf /var/lib/apt/lists/*
+
 COPY . /app
 RUN cd /app && npm install --quiet
 EXPOSE 3000
 WORKDIR /app
-ENTRYPOINT ["/usr/bin/dumb-init"]
 CMD npm run start
