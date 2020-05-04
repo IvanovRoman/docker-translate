@@ -36,12 +36,11 @@ app.get("/page", async (req, res) => {
     })
 
     const { html, browser } = await translateContent(url)
-    // console.log(html)
 
     res.write(html)
     res.end()
 
-    // await saveHtml(html)
+    await saveHtml(html)
     await browser.close()
   } catch (err) {
     console.log(err)
