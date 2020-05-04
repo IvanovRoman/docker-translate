@@ -30,11 +30,10 @@ app.get("/page", async (req, res) => {
             destination: dest,
         });
         const { html, browser } = await translateContent(url);
-        // console.log(html)
         res.write(html);
         res.end();
-        // await saveHtml(html)
-        // await browser.close()
+        await saveHtml(html);
+        await browser.close();
     }
     catch (err) {
         console.log(err);
@@ -76,8 +75,7 @@ async function translateContent(url) {
     return new Promise(async (resolve, reject) => {
         try {
             const browser = await puppeteer.launch({
-                // executablePath: process.env.CHROME_BIN,
-                headless: false,
+                // headless: false,
                 args: ["--no-sandbox", "--disable-setuid-sandbox"],
             });
             const page = await browser.newPage();
@@ -87,10 +85,11 @@ async function translateContent(url) {
             const childFrame = frame
                 .childFrames()
                 .find((fr) => fr.name() === "c");
-            console.log("content-frame: ", childFrame === null || childFrame === void 0 ? void 0 : childFrame.name());
+            console.log("content-frame: ", childFrame === null || childFrame === void 0 ? void 0 : childFrame.url());
             page.close();
-            // const transateLink: string | undefined = childFrame?.url()
-            const transateLink = "https://translate.googleusercontent.com/translate_c?depth=1&pto=aue&rurl=translate.google.ru&sl=pl&sp=nmt4&tl=ru&u=https://porady.sympatia.onet.pl/sympatia-radzi/zakochana-kobieta-symptomy/1n0xh64&usg=ALkJrhjHgShp8xVBuRs9bzWYBKEcp35JTQ";
+            const transateLink = childFrame === null || childFrame === void 0 ? void 0 : childFrame.url();
+            // const transateLink =
+            //   "https://translate.googleusercontent.com/translate_c?depth=1&pto=aue&rurl=translate.google.ru&sl=pl&sp=nmt4&tl=ru&u=https://porady.sympatia.onet.pl/sympatia-radzi/zakochana-kobieta-symptomy/1n0xh64&usg=ALkJrhjHgShp8xVBuRs9bzWYBKEcp35JTQ"
             const pageLink = await browser.newPage();
             await pageLink.setRequestInterception(true);
             pageLink.on("request", (request) => {

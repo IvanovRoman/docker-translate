@@ -92,7 +92,7 @@ async function translateContent(
           args: ["--no-sandbox", "--disable-setuid-sandbox"],
         })
         const page = await browser.newPage()
-        await page.goto(url)
+        await page.goto(url, { timeout: 0 })
 
         console.log(`Открываю страницу: ${url}`)
 
@@ -118,7 +118,10 @@ async function translateContent(
             request.continue()
           }
         })
-        await pageLink.goto(transateLink!, { waitUntil: "domcontentloaded" })
+        await pageLink.goto(transateLink!, {
+          waitUntil: "domcontentloaded",
+          timeout: 0,
+        })
 
         await autoScroll(pageLink)
         const html = await pageLink.content()
