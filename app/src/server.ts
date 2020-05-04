@@ -103,9 +103,9 @@ async function translateContent(
         console.log("content-frame: ", childFrame?.url())
         page.close()
 
-        // const transateLink: string | undefined = childFrame?.url()
-        const transateLink =
-          "https://translate.googleusercontent.com/translate_c?depth=1&pto=aue&rurl=translate.google.ru&sl=pl&sp=nmt4&tl=ru&u=https://porady.sympatia.onet.pl/sympatia-radzi/zakochana-kobieta-symptomy/1n0xh64&usg=ALkJrhjHgShp8xVBuRs9bzWYBKEcp35JTQ"
+        const transateLink: string | undefined = childFrame?.url()
+        // const transateLink =
+        //   "https://translate.googleusercontent.com/translate_c?depth=1&pto=aue&rurl=translate.google.ru&sl=pl&sp=nmt4&tl=ru&u=https://porady.sympatia.onet.pl/sympatia-radzi/zakochana-kobieta-symptomy/1n0xh64&usg=ALkJrhjHgShp8xVBuRs9bzWYBKEcp35JTQ"
         const pageLink = await browser.newPage()
         await pageLink.setRequestInterception(true)
         pageLink.on("request", (request) => {
